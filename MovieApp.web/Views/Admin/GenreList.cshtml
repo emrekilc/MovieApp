@@ -1,0 +1,32 @@
+﻿@model  AdminGenresViewModel
+
+<h1>Admin Genre List</h1>
+
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th style="width:30px;">#</th>
+            <th style="width:70px;">Count</th>
+            <th style="width:160px;">Name</th>
+            <th style="width:160px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var genre in Model.Genres)
+        {
+            <tr>
+                <td>@genre.GenreId</td>
+                <td>@genre.Count</td>
+                <td>@genre.Name</td>
+                <td>
+                    <a href="/admin/genreupdate/@genre.GenreId" class="btn btn-warning btn-sm">Update</a>
+                    <form action="/admin/genredelete" method="post" style="display:inline;">
+                        <input type="hidden" name="genreId" value="@genre.GenreId"/>
+                        <button type="submit"class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,87 @@
+﻿@model MovieApp.web.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+    int descriptionLimit = 100; // Açıklama sınırı
+}
+
+<h2>@Model.FullName's Profile</h2>
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToShortDateString()</p>
+
+<h3>Watched Movies</h3>
+<ul class="list-group">
+    @foreach (var movie in Model.WatchedMovies.Movies)
+    {
+        <li class="list-group-item">
+            <div class="media">
+                <img class="mr-3" src="/img/@movie.ImageUrl" alt="Card image cap" style="width: 64px; height: 64px;">
+                <div class="media-body">
+                    <h5 class="mt-0">@movie.Title</h5>
+                    <p class="card-text">
+                        @Html.Raw(movie.Description.Length > descriptionLimit ?
+                                 movie.Description.Substring(0, descriptionLimit) + "..." :
+                                 movie.Description)
+                        @if (movie.Description.Length > descriptionLimit)
+                        {
+                            <a href="javascript:void(0)" class="read-more" data-full-text="@movie.Description">Devamını Oku</a>
+                        }
+                    </p>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+
+<h3>Watch Later Movies</h3>
+<ul class="list-group">
+    @foreach (var movie in Model.WatchLaterMovies.Movies)
+    {
+        <li class="list-group-item">
+            <div class="media">
+                <img class="mr-3" src="/img/@movie.ImageUrl" alt="Card image cap" style="width: 64px; height: 64px;">
+                <div class="media-body">
+                    <h5 class="mt-0">@movie.Title</h5>
+                    <p class="card-text">
+                        @Html.Raw(movie.Description.Length > descriptionLimit ?
+                                 movie.Description.Substring(0, descriptionLimit) + "..." :
+                                 movie.Description)
+                        @if (movie.Description.Length > descriptionLimit)
+                        {
+                            <a href="javascript:void(0)" class="read-more" data-full-text="@movie.Description">Devamını Oku</a>
+                        }
+                    </p>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-iKb9e1TLz8nx0Vam+K63K8EKdPSluI4a7B0M5R7yG2zGZ5Ob9xiBPj8WW4XKxIZ2" crossorigin="anonymous">
+
+<style>
+    .description {
+        max-width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+        .description.full {
+            white-space: normal;
+        }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.read-more').forEach(function (button) {
+            button.addEventListener('click', function () {
+                var description = button.parentElement;
+                var fullText = button.getAttribute('data-full-text');
+                description.innerHTML = fullText;
+                description.classList.add('full');
+                button.remove();
+            });
+        });
+    });
+</script>

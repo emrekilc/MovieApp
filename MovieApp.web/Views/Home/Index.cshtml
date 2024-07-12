@@ -1,0 +1,53 @@
+﻿@model HomePageViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section header{
+
+    @await Html.PartialAsync("_header")
+
+}
+@section scripts{
+   
+    <script src="~/js/script.js"></script>
+    <script>
+        function markAsWatched(movieId) {
+            $.ajax({
+                url: '@Url.Action("MarkAsWatched", "Movies")',
+                type: 'POST',
+                data: { id: movieId },
+                success: function (result) {
+                    alert("Film izleme listesine eklendi!");
+                },
+                error: function (xhr, status, error) {
+                    alert("Bir hata oluştu: " + error);
+                }
+            });
+        }
+
+        function markAsWatchLater(movieId) {
+            $.ajax({
+                url: '@Url.Action("MarkAsWatchLater", "Movies")',
+                type: 'POST',
+                data: { id: movieId },
+                success: function (result) {
+                    alert("Film daha sonra izleme listesine eklendi!");
+                },
+                error: function (xhr, status, error) {
+                    alert("Bir hata oluştu: " + error);
+                }
+            });
+        }
+    </script>
+}
+
+    <h1>Film Listesi</h1>
+    <div id="filmler">
+        @foreach(var movie in Model.PopularMovies)
+    {
+        @await Html.PartialAsync("_movie", movie)
+    }
+    
+    </div>

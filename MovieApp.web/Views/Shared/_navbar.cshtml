@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Security.Claims
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="/img/logo.png" width="43" height="30" class="d-inline-block align-top" alt="MovieApp Logo">
+            MovieApp
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav mr-auto">
+                @if (HttpContextAccessor.HttpContext.Session.GetString("uyevarmi") == "1")
+                {
+                    <li class="nav-item">
+                        <a href="/movies/list" class="nav-link">Movies</a>
+                    </li>
+                    @* Kullanıcının rolünü kontrol etme *@
+                    @if (HttpContextAccessor.HttpContext.User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a href="/admin/moviecreate" class="nav-link">Admin Create Movie</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/movielist" class="nav-link">Admin Movies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/genrelist" class="nav-link">Admin Genres</a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Profile" asp-action="IndexProfile">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Account/Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Account/Register">Register</a>
+                    </li>
+                }
+            </ul>
+            @if (HttpContextAccessor.HttpContext.Session.GetString("uyevarmi") == "1")
+            {
+                <form action="/movies/list" method="get" class="form-inline my-2 my-lg-0">
+                    <div class="input-group">
+                        <input type="text" name="q" placeholder="Film Ara" class="form-control" aria-label="Film Ara" aria-describedby="button-search">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-light" id="button-search">Bul</button>
+                        </div>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</nav>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-iKb9e1TLz8nx0Vam+K63K8EKdPSluI4a7B0M5R7yG2zGZ5Ob9xiBPj8WW4XKxIZ2" crossorigin="anonymous">
